@@ -1,13 +1,44 @@
 import './App.css'
 import { useState } from 'react'
 
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "./firebase"
+
 import Dashboard from './Dashboard'
 
 
 function App() {
 
-
   const [logado, setLogado] = useState(false)
+
+  const [email, setEmail] = useState("")
+  const [senha, setSenha] = useState("")
+
+  const [erro, setErro] = useState("")
+
+
+  async function entrar() {
+
+    try {
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        senha
+      )
+
+
+      setLogado(true)
+      setErro("")
+
+
+    } catch (error) {
+
+      setErro("E-mail ou senha incorretos")
+
+    }
+
+  }
 
 
 
@@ -15,7 +46,7 @@ function App() {
 
     return (
 
-      <Dashboard 
+      <Dashboard
         sair={() => setLogado(false)}
       />
 
@@ -29,14 +60,12 @@ function App() {
 
     <div className="container">
 
-
       <div className="card">
 
 
         <h1>
           Portal Invest
         </h1>
-
 
 
         <p>
@@ -46,26 +75,50 @@ function App() {
 
 
         <input
-          placeholder="E-mail ou CPF"
+
+          placeholder="E-mail"
+
+          value={email}
+
+          onChange={(e)=>setEmail(e.target.value)}
+
         />
 
 
 
         <input
+
           type="password"
+
           placeholder="Senha"
+
+          value={senha}
+
+          onChange={(e)=>setSenha(e.target.value)}
+
         />
 
 
 
-        <button onClick={() => setLogado(true)}>
+        <button onClick={entrar}>
+
           Entrar
+
         </button>
 
 
 
-      </div>
+        {erro && (
 
+          <p>
+            {erro}
+          </p>
+
+        )}
+
+
+
+      </div>
 
     </div>
 
