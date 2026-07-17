@@ -1,7 +1,7 @@
 import './App.css'
 
 
-function Perfil() {
+function Perfil({ dadosCliente, usuario }) {
 
   return (
 
@@ -19,7 +19,6 @@ function Perfil() {
 
 
 
-
       <div className="box">
 
 
@@ -28,7 +27,7 @@ function Perfil() {
         </h3>
 
         <p>
-          Matheus Yuri
+          {dadosCliente?.nome || "Carregando..."}
         </p>
 
 
@@ -42,7 +41,7 @@ function Perfil() {
         </h3>
 
         <p>
-          cliente@portalinvest.com
+          {usuario?.email || "Carregando..."}
         </p>
 
 
@@ -66,11 +65,43 @@ function Perfil() {
 
 
         <h3>
-          Data de cadastro
+          Patrimônio
         </h3>
 
         <p>
-          Janeiro de 2026
+          {dadosCliente
+            ? `R$ ${dadosCliente.Patrimônio.toLocaleString('pt-BR')},00`
+            : "Carregando..."}
+        </p>
+
+
+
+        <hr />
+
+
+
+        <h3>
+          Saldo disponível
+        </h3>
+
+        <p>
+          {dadosCliente
+            ? `R$ ${dadosCliente.Disponível.toLocaleString('pt-BR')},00`
+            : "Carregando..."}
+        </p>
+
+
+
+        <hr />
+
+
+
+        <h3>
+          Rentabilidade
+        </h3>
+
+        <p>
+          {dadosCliente?.Rentabilidade || "0"}% ao mês
         </p>
 
 

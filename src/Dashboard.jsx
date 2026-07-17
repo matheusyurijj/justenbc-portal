@@ -44,7 +44,6 @@ function Dashboard({ sair, usuario }) {
       }
 
 
-
       const referencia = doc(
         db,
         "clientes",
@@ -61,15 +60,12 @@ function Dashboard({ sair, usuario }) {
 
       }
 
-
     }
 
 
     buscarCliente()
 
-
   }, [usuario])
-
 
 
 
@@ -87,7 +83,16 @@ function Dashboard({ sair, usuario }) {
 
 
     if (pagina === 'perfil') {
-      return <Perfil />
+
+      return (
+
+        <Perfil
+          dadosCliente={dadosCliente}
+          usuario={usuario}
+        />
+
+      )
+
     }
 
 
@@ -110,12 +115,11 @@ function Dashboard({ sair, usuario }) {
 
             valor={
               dadosCliente
-              ? `R$ ${dadosCliente.Patrimônio.toLocaleString('pt-BR')},00`
-              : "Carregando..."
+                ? `R$ ${dadosCliente.Patrimônio.toLocaleString('pt-BR')},00`
+                : "Carregando..."
             }
 
           />
-
 
 
           <CardResumo
@@ -126,12 +130,11 @@ function Dashboard({ sair, usuario }) {
 
             valor={
               dadosCliente?.Rentabilidade
-              ? `${dadosCliente.Rentabilidade}% ao mês`
-              : "Sem dados"
+                ? `${dadosCliente.Rentabilidade}% ao mês`
+                : "Sem dados"
             }
 
           />
-
 
 
           <CardResumo
@@ -142,8 +145,8 @@ function Dashboard({ sair, usuario }) {
 
             valor={
               dadosCliente?.Disponível
-              ? `R$ ${dadosCliente.Disponível.toLocaleString('pt-BR')},00`
-              : "R$ 0,00"
+                ? `R$ ${dadosCliente.Disponível.toLocaleString('pt-BR')},00`
+                : "R$ 0,00"
             }
 
           />
@@ -152,11 +155,9 @@ function Dashboard({ sair, usuario }) {
         </div>
 
 
-
         <h2 className="titulo">
           Evolução do patrimônio
         </h2>
-
 
 
         <div className="box">
@@ -165,14 +166,11 @@ function Dashboard({ sair, usuario }) {
 
         </div>
 
-
       </>
 
     )
 
   }
-
-
 
 
 
@@ -189,11 +187,9 @@ function Dashboard({ sair, usuario }) {
         </h2>
 
 
-
         <button onClick={() => setPagina('dashboard')}>
           Dashboard
         </button>
-
 
 
         <button onClick={() => setPagina('investimentos')}>
@@ -201,17 +197,14 @@ function Dashboard({ sair, usuario }) {
         </button>
 
 
-
         <button onClick={() => setPagina('extrato')}>
           Extrato
         </button>
 
 
-
         <button onClick={() => setPagina('perfil')}>
           Perfil
         </button>
-
 
 
         <button onClick={sair}>
@@ -220,8 +213,6 @@ function Dashboard({ sair, usuario }) {
 
 
       </aside>
-
-
 
 
       <main className="conteudo">
