@@ -1,31 +1,26 @@
-function Header() {
+function Header({ nome }) {
+
+
   return (
+
     <header className="header">
 
-      <div>
-        <h1>
-          Olá, Matheus 👋
-        </h1>
 
-        <p>
-          Confira sua posição financeira
-        </p>
-      </div>
+      <h2>
+        Olá, {nome || "Cliente"}
+      </h2>
 
-      <div className="usuario">
 
-        <span>
-          🔔
-        </span>
+      <p>
+        Bem-vindo ao seu painel Justen BC
+      </p>
 
-        <span>
-          Matheus
-        </span>
-
-      </div>
 
     </header>
+
   )
+
 }
+
 
 export default Header
