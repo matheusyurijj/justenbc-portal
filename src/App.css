@@ -1,0 +1,331 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0b0b0b;
+  color: white;
+}
+
+
+#root {
+  min-height: 100vh;
+}
+
+
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.card {
+  background: #151515;
+  width: 380px;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+
+
+h1 {
+  color: #d4af37;
+}
+
+
+
+h2 {
+  color: #ffffff;
+}
+
+
+
+p {
+  color: #aaaaaa;
+}
+
+
+
+input {
+
+  width: 90%;
+  padding: 14px;
+  margin: 8px;
+
+  background: #222;
+  color: white;
+
+  border: 1px solid #333;
+  border-radius: 10px;
+
+  font-size: 15px;
+}
+
+
+
+button {
+
+  width: 95%;
+  padding: 14px;
+
+  margin-top: 15px;
+
+  background: #d4af37;
+
+  color: #111;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+}
+
+
+
+button:hover {
+
+  opacity: 0.85;
+
+}
+
+
+
+/* DASHBOARD */
+
+
+.dashboard {
+
+  display: flex;
+
+  min-height: 100vh;
+
+}
+
+
+
+.menu {
+
+  width: 230px;
+
+  background: #111;
+
+  padding: 30px;
+
+  border-right: 1px solid #222;
+
+}
+
+
+
+.menu h2 {
+
+  color: #d4af37;
+
+  margin-bottom: 40px;
+
+}
+
+
+
+.menu button {
+
+  background: transparent;
+
+  color: white;
+
+  text-align: left;
+
+  margin-bottom: 10px;
+
+  border: 1px solid #333;
+
+}
+
+
+
+.menu button:hover {
+
+  background: #d4af37;
+
+  color: #111;
+
+}
+
+
+
+
+
+.conteudo {
+
+  flex: 1;
+
+  padding: 40px;
+
+  background: #0b0b0b;
+
+}
+
+
+
+
+.header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 30px;
+
+}
+
+
+
+.usuario {
+
+  display: flex;
+
+  gap: 20px;
+
+}
+
+
+
+
+.cards {
+
+  display: flex;
+
+  gap: 20px;
+
+  flex-wrap: wrap;
+
+}
+
+
+
+
+.box {
+
+  background: #151515;
+
+  padding: 25px;
+
+  border-radius: 15px;
+
+  border: 1px solid #222;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+}
+
+
+
+.cards .box {
+
+  min-width: 220px;
+
+}
+
+
+
+.titulo {
+
+  margin-top: 40px;
+
+}
+
+
+
+.investimentos {
+
+  display: flex;
+
+  gap: 20px;
+
+  flex-wrap: wrap;
+
+}.card-resumo {
+
+  background: #151515;
+
+  padding: 25px;
+
+  border-radius: 18px;
+
+  min-width: 230px;
+
+  border: 1px solid #252525;
+
+  box-shadow:
+  0 10px 30px rgba(0,0,0,0.5);
+
+}
+
+
+.card-resumo:hover {
+
+  border-color: #d4af37;
+
+  transform: translateY(-3px);
+
+}
+
+
+
+.icone {
+
+  font-size: 35px;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.card-resumo p {
+
+  color: #888;
+
+  margin: 0;
+
+}
+
+
+
+.card-resumo h2 {
+
+  color: #ffffff;
+
+  font-size: 28px;
+
+  margin: 10px 0;
+
+}
+
+
+
+.card-resumo span {
+
+  color: #d4af37;
+
+  font-size: 13px;
+
+}
+
+
+
+.extrato {
+
+  margin-top: 20px;
+
+}
