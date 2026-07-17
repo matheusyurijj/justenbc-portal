@@ -31,17 +31,32 @@ function Dashboard({ sair, usuario }) {
       let idCliente = ""
 
 
+
       if (usuario.email.includes("matheus")) {
         idCliente = "Matheus Yuri"
       }
+
 
       if (usuario.email.includes("emilly")) {
         idCliente = "Emilly Micheluzzi"
       }
 
+
       if (usuario.email.includes("igor")) {
         idCliente = "Igor de Barros Justen"
       }
+
+
+      if (usuario.email.includes("alecansi")) {
+        idCliente = "Ale Cansi"
+      }
+
+
+      if (usuario.email.includes("umaconta")) {
+        idCliente = "Daiana Nunes"
+      }
+
+
 
 
       const referencia = doc(
@@ -51,7 +66,9 @@ function Dashboard({ sair, usuario }) {
       )
 
 
+
       const resultado = await getDoc(referencia)
+
 
 
       if (resultado.exists()) {
@@ -60,26 +77,37 @@ function Dashboard({ sair, usuario }) {
 
       }
 
+
     }
 
 
     buscarCliente()
 
+
   }, [usuario])
+
+
 
 
 
   function mostrarPagina() {
 
 
+
     if (pagina === 'investimentos') {
+
       return <Investimentos />
+
     }
+
 
 
     if (pagina === 'extrato') {
+
       return <Extrato />
+
     }
+
 
 
     if (pagina === 'perfil') {
@@ -97,11 +125,13 @@ function Dashboard({ sair, usuario }) {
 
 
 
+
     return (
 
       <>
 
         <Header nome={dadosCliente?.nome} />
+
 
 
         <div className="cards">
@@ -115,11 +145,12 @@ function Dashboard({ sair, usuario }) {
 
             valor={
               dadosCliente
-                ? `R$ ${dadosCliente.Patrimônio.toLocaleString('pt-BR')},00`
-                : "Carregando..."
+              ? `R$ ${dadosCliente.Patrimônio.toLocaleString('pt-BR')},00`
+              : "Carregando..."
             }
 
           />
+
 
 
           <CardResumo
@@ -130,11 +161,12 @@ function Dashboard({ sair, usuario }) {
 
             valor={
               dadosCliente?.Rentabilidade
-                ? `${dadosCliente.Rentabilidade}% ao mês`
-                : "Sem dados"
+              ? `${dadosCliente.Rentabilidade}% ao mês`
+              : "Sem dados"
             }
 
           />
+
 
 
           <CardResumo
@@ -145,19 +177,23 @@ function Dashboard({ sair, usuario }) {
 
             valor={
               dadosCliente?.Disponível
-                ? `R$ ${dadosCliente.Disponível.toLocaleString('pt-BR')},00`
-                : "R$ 0,00"
+              ? `R$ ${dadosCliente.Disponível.toLocaleString('pt-BR')},00`
+              : "R$ 0,00"
             }
 
           />
 
 
+
         </div>
+
+
 
 
         <h2 className="titulo">
           Evolução do patrimônio
         </h2>
+
 
 
         <div className="box">
@@ -166,11 +202,14 @@ function Dashboard({ sair, usuario }) {
 
         </div>
 
+
       </>
 
     )
 
   }
+
+
 
 
 
@@ -187,9 +226,11 @@ function Dashboard({ sair, usuario }) {
         </h2>
 
 
+
         <button onClick={() => setPagina('dashboard')}>
           Dashboard
         </button>
+
 
 
         <button onClick={() => setPagina('investimentos')}>
@@ -197,14 +238,17 @@ function Dashboard({ sair, usuario }) {
         </button>
 
 
+
         <button onClick={() => setPagina('extrato')}>
           Extrato
         </button>
 
 
+
         <button onClick={() => setPagina('perfil')}>
           Perfil
         </button>
+
 
 
         <button onClick={sair}>
@@ -215,11 +259,14 @@ function Dashboard({ sair, usuario }) {
       </aside>
 
 
+
+
       <main className="conteudo">
 
         {mostrarPagina()}
 
       </main>
+
 
 
     </div>
