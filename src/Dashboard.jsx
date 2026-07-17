@@ -20,6 +20,7 @@ function Dashboard({ sair, usuario }) {
   const [dadosCliente, setDadosCliente] = useState(null)
 
 
+
   useEffect(() => {
 
     async function buscarCliente() {
@@ -41,6 +42,7 @@ function Dashboard({ sair, usuario }) {
       if (usuario.email.includes("igor")) {
         idCliente = "Igor de Barros Justen"
       }
+
 
 
       const referencia = doc(
@@ -70,6 +72,7 @@ function Dashboard({ sair, usuario }) {
 
 
 
+
   function mostrarPagina() {
 
 
@@ -93,14 +96,16 @@ function Dashboard({ sair, usuario }) {
 
       <>
 
-        <Header />
+        <Header nome={dadosCliente?.nome} />
 
 
         <div className="cards">
 
 
           <CardResumo
+
             icone="💰"
+
             titulo="Patrimônio Total"
 
             valor={
@@ -114,17 +119,33 @@ function Dashboard({ sair, usuario }) {
 
 
           <CardResumo
+
             icone="📈"
+
             titulo="Rentabilidade"
-            valor="+1,20% ao mês"
+
+            valor={
+              dadosCliente?.Rentabilidade
+              ? `${dadosCliente.Rentabilidade}% ao mês`
+              : "Sem dados"
+            }
+
           />
 
 
 
           <CardResumo
+
             icone="💵"
+
             titulo="Disponível"
-            valor="R$ 15.000,00"
+
+            valor={
+              dadosCliente?.Disponível
+              ? `R$ ${dadosCliente.Disponível.toLocaleString('pt-BR')},00`
+              : "R$ 0,00"
+            }
+
           />
 
 
@@ -150,6 +171,7 @@ function Dashboard({ sair, usuario }) {
     )
 
   }
+
 
 
 
@@ -204,12 +226,9 @@ function Dashboard({ sair, usuario }) {
 
       <main className="conteudo">
 
-
         {mostrarPagina()}
 
-
       </main>
-
 
 
     </div>
