@@ -1,5 +1,8 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+import { db } from "./firebase"
+import { doc, getDoc } from "firebase/firestore"
 
 import Grafico from './Grafico'
 import Header from './Header'
@@ -10,10 +13,60 @@ import Extrato from './Extrato'
 import Perfil from './Perfil'
 
 
-function Dashboard({ sair }) {
-
+function Dashboard({ sair, usuario }) {
 
   const [pagina, setPagina] = useState('dashboard')
+
+  const [dadosCliente, setDadosCliente] = useState(null)
+
+
+  useEffect(() => {
+
+    async function buscarCliente() {
+
+      if (!usuario) return
+
+
+      let idCliente = ""
+
+
+      if (usuario.email.includes("matheus")) {
+        idCliente = "Matheus Yuri"
+      }
+
+      if (usuario.email.includes("emilly")) {
+        idCliente = "Emilly Micheluzzi"
+      }
+
+      if (usuario.email.includes("igor")) {
+        idCliente = "Igor de Barros Justen"
+      }
+
+
+      const referencia = doc(
+        db,
+        "clientes",
+        idCliente
+      )
+
+
+      const resultado = await getDoc(referencia)
+
+
+      if (resultado.exists()) {
+
+        setDadosCliente(resultado.data())
+
+      }
+
+
+    }
+
+
+    buscarCliente()
+
+
+  }, [usuario])
 
 
 
@@ -40,7 +93,6 @@ function Dashboard({ sair }) {
 
       <>
 
-
         <Header />
 
 
@@ -50,7 +102,13 @@ function Dashboard({ sair }) {
           <CardResumo
             icone="💰"
             titulo="Patrimônio Total"
-            valor="R$ 2.250.000,00"
+
+            valor={
+              dadosCliente
+              ? `R$ ${dadosCliente.Patrimônio.toLocaleString('pt-BR')},00`
+              : "Carregando..."
+            }
+
           />
 
 
@@ -105,7 +163,7 @@ function Dashboard({ sair }) {
 
 
         <h2>
-          Portal Invest
+          Justen BC
         </h2>
 
 
@@ -137,7 +195,6 @@ function Dashboard({ sair }) {
         <button onClick={sair}>
           🚪 Sair
         </button>
-
 
 
       </aside>

@@ -9,7 +9,10 @@ import Dashboard from './Dashboard'
 
 function App() {
 
+
   const [logado, setLogado] = useState(false)
+
+  const [usuario, setUsuario] = useState(null)
 
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
@@ -17,22 +20,26 @@ function App() {
   const [erro, setErro] = useState("")
 
 
+
   async function entrar() {
 
     try {
 
-      await signInWithEmailAndPassword(
+      const resultado = await signInWithEmailAndPassword(
         auth,
         email,
         senha
       )
 
 
+      setUsuario(resultado.user)
+
       setLogado(true)
+
       setErro("")
 
 
-    } catch (error) {
+    } catch {
 
       setErro("E-mail ou senha incorretos")
 
@@ -42,11 +49,13 @@ function App() {
 
 
 
+
   if (logado) {
 
     return (
 
       <Dashboard
+        usuario={usuario}
         sair={() => setLogado(false)}
       />
 
@@ -56,16 +65,19 @@ function App() {
 
 
 
+
   return (
 
     <div className="container">
+
 
       <div className="card">
 
 
         <h1>
-          Portal Invest
+          Justen BC
         </h1>
+
 
 
         <p>
@@ -119,6 +131,7 @@ function App() {
 
 
       </div>
+
 
     </div>
 
