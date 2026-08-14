@@ -2,14 +2,12 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import { db } from "./firebase"
 import { doc, getDoc } from "firebase/firestore"
+
+import Grafico from './Grafico'
 import Header from './Header'
+import CardResumo from './CardResumo'
 import Extrato from './Extrato'
 import Perfil from './Perfil'
-
-function calcularRentabilidade(inicial, atual) {
-  if (!inicial || inicial === 0) return 0;
-  return (((atual - inicial) / inicial) * 100).toFixed(2);
-}
 
 function Dashboard({ sair, usuario }) {
   const [pagina, setPagina] = useState('dashboard')
@@ -43,35 +41,50 @@ function Dashboard({ sair, usuario }) {
     if (pagina === 'perfil') return <Perfil dadosCliente={dadosCliente} usuario={usuario} />
 
     // Página principal (Dashboard)
-    const saldoInicial = dadosCliente?.SaldoInicial || 0
     const patrimonio = dadosCliente?.Patrimônio || 0
     const disponivel = dadosCliente?.Disponível || 0
-    const rentabilidade = calcularRentabilidade(saldoInicial, patrimonio)
+    const saldoInicial = dadosCliente?.SaldoInicial || 0
+    const rentabilidade = saldoInicial
+      ? (((patrimonio - saldoInicial) / saldoInicial) * 100).toFixed(2)
+      : 0
 
     return (
       <>
         <Header nome={dadosCliente?.nome} />
 
-        <div className="painel">
-          <div className="box">
-            <h3>Patrimônio Atual</h3>
-            <h2>R$ {patrimonio.toLocaleString('pt-BR')}</h2>
+        <div className="cards">
+          <div className="card-resumo">
+            <div className="icone">💰</div>
+            <p>Patrimônio Atual</p>
+            <h2>R$ {patrimonio.toLocaleString('pt-BR')},00</h2>
+            <span>Total acumulado</span>
           </div>
 
-          <div className="box">
-            <h3>Saldo Inicial</h3>
-            <h2>R$ {saldoInicial.toLocaleString('pt-BR')}</h2>
+          <div className="card-resumo">
+            <div className="icone">💵</div>
+            <p>Saldo Inicial</p>
+            <h2>R$ {saldoInicial.toLocaleString('pt-BR')},00</h2>
+            <span>Valor de entrada</span>
           </div>
 
-          <div className="box">
-            <h3>Disponível</h3>
-            <h2>R$ {disponivel.toLocaleString('pt-BR')}</h2>
-          </div>
-
-          <div className="box">
-            <h3>Rentabilidade</h3>
+          <div className="card-resumo">
+            <div className="icone">📈</div>
+            <p>Rentabilidade</p>
             <h2>{rentabilidade}%</h2>
+            <span>Comparado ao saldo inicial</span>
           </div>
+
+          <div className="card-resumo">
+            <div className="icone">💳</div>
+            <p>Disponível</p>
+            <h2>R$ {disponivel.toLocaleString('pt-BR')},00</h2>
+            <span>Saldo livre</span>
+          </div>
+        </div>
+
+        <h2 className="titulo">Evolução do patrimônio</h2>
+        <div className="box">
+          <Grafico />
         </div>
       </>
     )
@@ -86,6 +99,7 @@ function Dashboard({ sair, usuario }) {
         <button onClick={() => setPagina('perfil')}>Perfil</button>
         <button onClick={sair}>🚪 Sair</button>
       </aside>
+
       <main className="conteudo">{mostrarPagina()}</main>
     </div>
   )
