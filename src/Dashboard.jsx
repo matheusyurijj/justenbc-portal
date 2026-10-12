@@ -47,11 +47,29 @@ function Dashboard({ sair, usuario }) {
         idCliente = "Taylana Martins"
       }
 
-      const referencia = doc(db, "clientes", idCliente)
-      const resultado = await getDoc(referencia)
+      if (usuario.email.toLowerCase().includes("danii_sell")) {
+        idCliente = "Daniela Sell"
+      }
 
-      if (resultado.exists()) {
-        setDadosCliente(resultado.data())
+      if (!idCliente) {
+        setDadosCliente(null)
+        console.error("Cliente não identificado:", usuario.email)
+        return
+      }
+
+      try {
+        const referencia = doc(db, "clientes", idCliente)
+        const resultado = await getDoc(referencia)
+
+        if (resultado.exists()) {
+          setDadosCliente(resultado.data())
+        } else {
+          setDadosCliente(null)
+          console.error("Documento não encontrado:", idCliente)
+        }
+      } catch (erro) {
+        console.error("Erro ao buscar cliente:", erro)
+        setDadosCliente(null)
       }
     }
 
@@ -72,10 +90,9 @@ function Dashboard({ sair, usuario }) {
       )
     }
 
-    // Página principal (Dashboard)
-    const patrimonio = dadosCliente?.Patrimônio || 0
-    const disponivel = dadosCliente?.Disponível || 0
-    const saldoInicial = dadosCliente?.SaldoInicial || 0
+    const patrimonio = Number(dadosCliente?.Patrimônio) || 0
+    const disponivel = Number(dadosCliente?.Disponível) || 0
+    const saldoInicial = Number(dadosCliente?.SaldoInicial) || 0
 
     const rentabilidade = saldoInicial
       ? (((patrimonio - saldoInicial) / saldoInicial) * 100).toFixed(2)
@@ -86,7 +103,6 @@ function Dashboard({ sair, usuario }) {
         <Header nome={dadosCliente?.nome} />
 
         <div className="cards">
-
           <div className="card-resumo">
             <div className="icone">💰</div>
             <p>Patrimônio Atual</p>
@@ -120,7 +136,6 @@ function Dashboard({ sair, usuario }) {
             </h2>
             <span>Saldo livre</span>
           </div>
-
         </div>
 
         <h2 className="titulo">Evolução do patrimônio</h2>
@@ -134,9 +149,7 @@ function Dashboard({ sair, usuario }) {
 
   return (
     <div className="dashboard">
-
       <aside className="menu">
-
         <h2>Justen BC</h2>
 
         <button onClick={() => setPagina('dashboard')}>
@@ -154,13 +167,11 @@ function Dashboard({ sair, usuario }) {
         <button onClick={sair}>
           🚪 Sair
         </button>
-
       </aside>
 
       <main className="conteudo">
         {mostrarPagina()}
       </main>
-
     </div>
   )
 }
