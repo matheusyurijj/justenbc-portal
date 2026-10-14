@@ -5,76 +5,80 @@ import { doc, getDoc } from "firebase/firestore"
 
 import Grafico from './Grafico'
 import Header from './Header'
-import CardResumo from './CardResumo'
 import Extrato from './Extrato'
 import Perfil from './Perfil'
 
 function Dashboard({ sair, usuario }) {
   const [pagina, setPagina] = useState('dashboard')
   const [dadosCliente, setDadosCliente] = useState(null)
+  const [erro, setErro] = useState('')
 
   useEffect(() => {
+    let ativo = true
+
     async function buscarCliente() {
-      if (!usuario) return
+      setDadosCliente(null)
+      setErro('')
 
-      let idCliente = ""
+      if (!usuario?.email) return
 
-      if (usuario.email.includes("matheus")) {
-        idCliente = "Matheus Yuri"
+      const email = usuario.email.toLowerCase()
+
+      const clientes = {
+        matheus: 'Matheus Yuri',
+        emilly: 'Emilly Micheluzzi',
+        igor: 'Igor de Barros Justen',
+        alecansi: 'Ale Cansi',
+        umaconta: 'Daiana Nunes',
+        danibagattini: 'Daniela Bagattini',
+        danii_sell: 'Daniela Sell',
+        taylanam6: 'Taylana Martins'
       }
 
-      if (usuario.email.includes("emilly")) {
-        idCliente = "Emilly Micheluzzi"
-      }
+      const identificador = Object.keys(clientes).find(chave =>
+        email.includes(chave)
+      )
 
-      if (usuario.email.includes("igor")) {
-        idCliente = "Igor de Barros Justen"
-      }
-
-      if (usuario.email.includes("alecansi")) {
-        idCliente = "Ale Cansi"
-      }
-
-      if (usuario.email.includes("umaconta")) {
-        idCliente = "Daiana Nunes"
-      }
-
-      if (usuario.email.includes("danibagattini")) {
-        idCliente = "Daniela Bagattini"
-      }
-
-      if (usuario.email.includes("taylanam6")) {
-        idCliente = "Taylana Martins"
-      }
-
-      if (usuario.email.toLowerCase().includes("danii_sell")) {
-        idCliente = "Daniela Sell"
-      }
-
-      if (!idCliente) {
-        setDadosCliente(null)
-        console.error("Cliente não identificado:", usuario.email)
+      if (!identificador) {
+        if (ativo) setErro('Não foi possível identificar este cliente.')
         return
       }
 
+      const idCliente = clientes[identificador]
+
       try {
-        const referencia = doc(db, "clientes", idCliente)
+        const referencia = doc(db, 'clientes', idCliente)
         const resultado = await getDoc(referencia)
+
+        if (!ativo) return
 
         if (resultado.exists()) {
           setDadosCliente(resultado.data())
         } else {
-          setDadosCliente(null)
-          console.error("Documento não encontrado:", idCliente)
+          setErro(`Documento "${idCliente}" não encontrado no Firestore.`)
         }
-      } catch (erro) {
-        console.error("Erro ao buscar cliente:", erro)
-        setDadosCliente(null)
+      } catch (e) {
+        console.error('Erro ao buscar cliente:', e)
+        if (ativo) {
+          setErro('Erro ao carregar os dados. Confira a conexão e as permissões do Firebase.')
+        }
       }
     }
 
     buscarCliente()
+
+    return () => {
+      ativo = false
+    }
   }, [usuario])
+
+  function obterCampo(dados, nome) {
+    const entrada = Object.entries(dados || {}).find(
+      ([chave]) => chave.trim() === nome
+    )
+
+    return entrada ? entrada[1] : 0
+  }
 
   function mostrarPagina() {
     if (pagina === 'extrato') {
@@ -90,9 +94,9 @@ function Dashboard({ sair, usuario }) {
       )
     }
 
-    const patrimonio = Number(dadosCliente?.Patrimônio) || 0
-    const disponivel = Number(dadosCliente?.Disponível) || 0
-    const saldoInicial = Number(dadosCliente?.SaldoInicial) || 0
+    const patrimonio = Number(obterCampo(dadosCliente, 'Patrimônio')) || 0
+    const disponivel = Number(obterCampo(dadosCliente, 'Disponível')) || 0
+    const saldoInicial = Number(obterCampo(dadosCliente, 'SaldoInicial')) || 0
 
     const rentabilidade = saldoInicial
       ? (((patrimonio - saldoInicial) / saldoInicial) * 100).toFixed(2)
@@ -102,22 +106,22 @@ function Dashboard({ sair, usuario }) {
       <>
         <Header nome={dadosCliente?.nome} />
 
+        {erro && <p>{erro}</p>}
+
+        {!dadosCliente && !erro && <p>Carregando dados...</p>}
+
         <div className="cards">
           <div className="card-resumo">
             <div className="icone">💰</div>
             <p>Patrimônio Atual</p>
-            <h2>
-              R$ {patrimonio.toLocaleString('pt-BR')},00
-            </h2>
+            <h2>R$ {patrimonio.toLocaleString('pt-BR')},00</h2>
             <span>Total acumulado</span>
           </div>
 
           <div className="card-resumo">
             <div className="icone">💵</div>
             <p>Saldo Inicial</p>
-            <h2>
-              R$ {saldoInicial.toLocaleString('pt-BR')},00
-            </h2>
+            <h2>R$ {saldoInicial.toLocaleString('pt-BR')},00</h2>
             <span>Valor de entrada</span>
           </div>
 
@@ -131,9 +135,7 @@ function Dashboard({ sair, usuario }) {
           <div className="card-resumo">
             <div className="icone">💳</div>
             <p>Disponível</p>
-            <h2>
-              R$ {disponivel.toLocaleString('pt-BR')},00
-            </h2>
+            <h2>R$ {disponivel.toLocaleString('pt-BR')},00</h2>
             <span>Saldo livre</span>
           </div>
         </div>
